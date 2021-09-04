@@ -30,14 +30,17 @@ type Server struct {
 }
 
 func (s *Server) Start() error {
+	// TCPソケットを使用したListen
 	listenConfig := net.ListenConfig{Control: SetUpSocket}
-	listner, err := listenConfig.Listen(context.Background(), "tcp", fmt.Sprintf("%s:%d", s.address, s.port))
+	listener, err := listenConfig.Listen(context.Background(), "tcp", fmt.Sprintf("%s:%d", s.address, s.port))
 	if err != nil {
 		return err
 	}
 
+	log.Printf("TCP Echo Server[%s], startup.", listener.Addr())
+
 	for {
-		conn, err := listner.Accept()
+		conn, err := listener.Accept()
 		if err != nil {
 			continue
 		}
