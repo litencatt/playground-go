@@ -109,7 +109,7 @@ func (i *Input) GetObjectVariables() []ObjectVariable {
 	return ov
 }
 
-func (l *Element) UnmarshalJSON(b []byte) error {
+func (e *Element) UnmarshalJSON(b []byte) error {
 	// log.Println("unmarshal json is called")
 
 	type Alias Element
@@ -118,7 +118,7 @@ func (l *Element) UnmarshalJSON(b []byte) error {
 		VariablePart json.RawMessage `json:"variable"`
 		*Alias
 	}{
-		Alias: (*Alias)(l),
+		Alias: (*Alias)(e),
 	}
 
 	// 一旦ListにUnmarshal
@@ -127,20 +127,20 @@ func (l *Element) UnmarshalJSON(b []byte) error {
 	}
 
 	// Unmarshal後のKeyに応じてVariablePartのUnmarshalする構造体を条件分岐
-	switch l.Key {
+	switch e.Key {
 	case "B":
 		var s []string
 		if err := json.Unmarshal(a.VariablePart, &s); err != nil {
 			log.Fatal(err)
 		}
-		l.VariablePart = &s
+		e.VariablePart = &s
 		// log.Printf("typeB List: %+v", l.VariablePart)
 	case "C":
 		var s []ObjectVariable
 		if err := json.Unmarshal(a.VariablePart, &s); err != nil {
 			log.Fatal(err)
 		}
-		l.VariablePart = &s
+		e.VariablePart = &s
 		// log.Printf("typeC List: %+v", l.VariablePart)
 	default:
 		return nil
