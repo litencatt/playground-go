@@ -94,7 +94,7 @@ func (i *Input) GetVariableB() []string {
 }
 
 // 原則としてCはjson内に1つしか含まれない
-func (i *Input) GetObjectVariables() []ObjectVariable {
+func (i *Input) GetVariableC() []ObjectVariable {
 	ov := []ObjectVariable{}
 	for _, e := range i.List {
 		if e.Key != "C" {
@@ -121,7 +121,7 @@ func (e *Element) UnmarshalJSON(b []byte) error {
 		Alias: (*Alias)(e),
 	}
 
-	// 一旦ListにUnmarshal
+	// 一旦全体をUnmarshal
 	if err := json.Unmarshal(b, &a); err != nil {
 		return err
 	}
@@ -167,7 +167,7 @@ func main() {
 		log.Printf("%q", s)
 	}
 
-	lo := i.GetObjectVariables()
+	lo := i.GetVariableC()
 	for _, o := range lo {
 		log.Printf("%+v", o)
 	}
