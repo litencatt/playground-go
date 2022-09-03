@@ -1,0 +1,8 @@
+go 1.19
+
+use (
+	./DIP
+	./echo-server
+	./goget
+	./web-service-gin
+)
