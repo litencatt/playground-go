@@ -31,7 +31,7 @@ const inputC = `
 	]
 }
 `
-const inputD = `
+const input = `
 {
   "list": [
     {
@@ -77,6 +77,7 @@ type ObjectVariable struct {
 	Key2 string `json:"key2"`
 }
 
+// 原則としてBはjson内に1つしか含まれない
 func (i *Input) GetVariableB() []string {
 	as := []string{}
 	for _, e := range i.List {
@@ -87,10 +88,12 @@ func (i *Input) GetVariableB() []string {
 		case *[]string:
 			as = *e.VariablePart.(*[]string)
 		}
+		break
 	}
 	return as
 }
 
+// 原則としてCはjson内に1つしか含まれない
 func (i *Input) GetObjectVariables() []ObjectVariable {
 	ov := []ObjectVariable{}
 	for _, e := range i.List {
@@ -101,12 +104,13 @@ func (i *Input) GetObjectVariables() []ObjectVariable {
 		case *[]ObjectVariable:
 			ov = *e.VariablePart.(*[]ObjectVariable)
 		}
+		break
 	}
 	return ov
 }
 
 func (l *Element) UnmarshalJSON(b []byte) error {
-	// log.Println("List UnmarshalJSON called")
+	// log.Println("unmarshal json is called")
 
 	type Alias Element
 	a := &struct {
@@ -149,7 +153,6 @@ func main() {
 	// 行数表示
 	log.SetFlags(log.Lshortfile)
 
-	input := inputD
 	log.Println(string(input))
 
 	// inputのUnmarshal
