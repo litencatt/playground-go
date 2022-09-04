@@ -49,12 +49,12 @@ const input = `
       "key": "C",
       "variable": [
         {
-          "key1": "c1",
-          "key2": "c2"
+          "foo": "1",
+          "bar": "2"
         },
         {
-          "key1": "c3",
-          "key2": "c4"
+          "foo": "3",
+          "bar": "4"
         }
       ]
     }
