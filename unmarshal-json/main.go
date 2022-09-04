@@ -73,8 +73,8 @@ type Element struct {
 }
 
 type ObjectVariable struct {
-	Key1 string `json:"key1"`
-	Key2 string `json:"key2"`
+	Foo string `json:"foo"`
+	Bar string `json:"bar"`
 }
 
 // 原則としてBはjson内に1つしか含まれない
