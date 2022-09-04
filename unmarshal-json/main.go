@@ -36,7 +36,7 @@ const input = `
   "list": [
     {
       "key": "A",
-      "value": "bbb"
+      "value": "aaa"
     },
     {
       "key": "B",
@@ -49,12 +49,12 @@ const input = `
       "key": "C",
       "variable": [
         {
-          "key1": "apple",
-          "key2": "peach"
+          "key1": "c1",
+          "key2": "c2"
         },
         {
-          "key1": "orange",
-          "key2": "pear"
+          "key1": "c3",
+          "key2": "c4"
         }
       ]
     }
