@@ -14,8 +14,8 @@ type R1 struct {
 }
 
 type R2 struct {
-	Param1 string
-	Param2 string
+	Param3 string
+	Param4 string
 }
 
 type KV struct {
@@ -35,8 +35,8 @@ func main() {
 	fmt.Println(r1)
 
 	s2 := R2{
-		Param1: "Val4",
-		Param2: "Val5",
+		Param3: "Val4",
+		Param4: "Val5",
 	}
 	fmt.Printf("Input:\n%+v\n", s2)
 	r2 := convToStr(s2)
@@ -108,17 +108,21 @@ func decodeJSON(input string, payload interface{}) error {
 	}
 	fmt.Printf("KV: %+v\n", kv)
 
-	r := reflect.TypeOf(payload).Elem()
+	r := reflect.ValueOf(payload).Elem()
 	for i := 0; i < r.NumField(); i++ {
 		f := r.Field(i)
-		vs := collectValues(kv, f.Name)
+		t := r.Type().Field(i)
+		vs := collectValues(kv, t.Name)
 		if len(vs) == 0 {
 			continue
 		}
-		if f.Type == reflect.TypeOf([]string{}) {
-			params[f.Name] = vs
-		} else {
-			params[f.Name] = vs[0]
+		switch f.Kind() {
+		case reflect.Slice:
+			params[t.Name] = vs
+		case reflect.String:
+			params[t.Name] = vs[0]
+		default:
+			fmt.Printf("not support kind %s", f.Kind())
 		}
 	}
 	js, err := json.Marshal(params)
