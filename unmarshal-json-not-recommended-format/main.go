@@ -7,15 +7,7 @@ import (
 	"strings"
 )
 
-type R1 struct {
-	List L1 `json:"list"`
-}
-
-type L1 struct {
-	ListItem Item `json:"listItem"`
-}
-
-type Result struct {
+type S struct {
 	List List `json:"list"`
 }
 
@@ -39,9 +31,10 @@ func (l *List) UnmarshalJSON(b []byte) error {
 	}
 
 	var itf map[string]interface{}
-	if err := json.Unmarshal([]byte(rep), &itf); err != nil {
+	if err := json.Unmarshal(b, &itf); err != nil {
 		return err
 	}
+	fmt.Println(itf)
 
 	var items []Item
 	for _, v := range itf {
@@ -62,7 +55,7 @@ func (l *List) UnmarshalJSON(b []byte) error {
 }
 
 func main() {
-	nonRec := []byte(`
+	input := []byte(`
   {
     "list": {
       "listItem": {
@@ -83,39 +76,10 @@ func main() {
     }
   }`)
 
-	// replaceDupKey := []byte(`
-	// {
-	//   "list": {
-	//     "listItem1": {
-	//       "foo": "1",
-	//       "bar": "2",
-	//       "buz": "3"
-	//     },
-	//     "listItem2": {
-	//       "foo": "4",
-	//       "bar": "5",
-	//       "buz": "6"
-	//     },
-	//     "listItem3": {
-	//       "foo": "7",
-	//       "bar": "8",
-	//       "buz": "9"
-	//     }
-	//   }
-	// }`)
-
-	var r1 interface{}
-	if err := json.Unmarshal(nonRec, &r1); err != nil {
+	var s S
+	if err := json.Unmarshal(input, &s); err != nil {
 		fmt.Println(err)
 	}
-	//fmt.Printf("r1:%+v\n", r1)
 
-	var tmp Result
-	if err := json.Unmarshal(nonRec, &tmp); err != nil {
-		fmt.Println(err)
-	}
-	//fmt.Printf("%+v\n", tmp)
-
-	j, _ := json.Marshal(tmp)
-	fmt.Println(string(j))
+	fmt.Printf("%+v", s)
 }
